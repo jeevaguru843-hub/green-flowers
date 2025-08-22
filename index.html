@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Green Bloom Flowers</title>
+
+  <!-- Unique favicon (tiny flower SVG as data URL) -->
+  <link rel="icon" type="image/svg+xml"
+        href='data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="%23ff7aa2"/><stop offset="1" stop-color="%23ff4d6d"/></linearGradient></defs><circle cx="64" cy="64" r="60" fill="%23ffffff"/><g transform="translate(64 64)"><circle r="14" fill="%23ffd166"/><g fill="url(%23g)"><circle cx="0" cy="-34" r="18"/><circle cx="0" cy="34" r="18"/><circle cx="34" cy="0" r="18"/><circle cx="-34" cy="0" r="18"/><circle cx="24" cy="-24" r="16"/><circle cx="-24" cy="-24" r="16"/><circle cx="24" cy="24" r="16"/><circle cx="-24" cy="24" r="16"/></g></g></svg>'>
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <meta name="theme-color" content="#2e7d32"/>
+
+  <style>
+    :root{
+      --brand:#2e7d32;
+      --brand-2:#43a047;
+      --accent:#ff6f91;
+      --soft:#f6fff6;
+      --ink:#333;
+      --ring:rgba(46,125,50,.15);
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{font-family:"Segoe UI",Arial,sans-serif;margin:0;color:var(--ink);background:#fff}
+    a{color:inherit}
+    .container{width:min(1100px,92%);margin:auto}
+
+    header{position:sticky;top:0;z-index:50;background:rgba(46,125,50,.95);color:#fff;backdrop-filter:blur(6px);border-bottom:1px solid rgba(255,255,255,.15)}
+    .header-wrap{display:flex;align-items:center;justify-content:space-between;padding:12px 0}
+    .brand{display:flex;gap:10px;align-items:center;font-weight:700;letter-spacing:.3px}
+    .brand img{width:42px;height:42px;border-radius:50%;object-fit:cover;box-shadow:0 2px 6px rgba(0,0,0,.2)}
+    nav a{color:#fff;text-decoration:none;margin:0 10px;font-weight:600;padding:8px 10px;border-radius:10px}
+    nav a:hover, nav a.active{background:rgba(255,255,255,.15)}
+    .login-btn{background:#fff;color:var(--brand);font-weight:700;padding:8px 14px;border-radius:10px;cursor:pointer;box-shadow:0 2px 6px rgba(0,0,0,.1)}
+
+    #home{position:relative;color:#fff;background:url('ground.jpeg') center/cover no-repeat fixed;isolation:isolate}
+    #home::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.45),rgba(0,0,0,.55));z-index:-1}
+    .hero{padding:110px 0 120px;text-align:center}
+    .hero h1{font-size:48px;margin:0 0 10px;font-weight:800}
+    .hero p{font-size:19px;opacity:.95;margin:0 0 22px}
+    .cta{display:inline-flex;align-items:center;gap:10px;background:var(--brand-2);color:#fff;padding:12px 22px;border-radius:999px;text-decoration:none;font-weight:700;box-shadow:0 6px 18px rgba(67,160,71,.35);transition:transform .15s ease}
+    .cta:hover{transform:translateY(-2px)}
+    .mini-badges{display:flex;gap:16px;justify-content:center;margin-top:18px;flex-wrap:wrap}
+    .mini-badges span{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);padding:6px 10px;border-radius:999px;font-size:13px}
+
+    section{padding:64px 0}
+    h2.section-title{text-align:center;color:var(--brand);font-size:30px;margin:0 0 20px;font-weight:800;letter-spacing:.2px}
+    .section-card{background:#fff;border-radius:16px;padding:28px;box-shadow:0 6px 24px rgba(0,0,0,.06);border:1px solid #eef3ee}
+
+    .about p{line-height:1.8;font-size:18px;text-align:center;margin:10px 0}
+    .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px;margin-top:18px}
+    .stat{background:var(--soft);border:1px solid #e9f6ea;border-radius:14px;padding:14px;text-align:center}
+    .stat i{color:var(--brand-2);margin-bottom:6px;font-size:18px}
+
+    .services-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px}
+    .service{background:#fff;padding:24px;border-radius:14px;border:1px solid #edf4ee;box-shadow:0 4px 16px rgba(0,0,0,.05);text-align:center;transition:transform .15s ease}
+    .service:hover{transform:translateY(-4px)}
+    .service i{font-size:28px;color:var(--brand-2);margin-bottom:10px}
+    .service h3{margin:6px 0 8px;color:var(--brand-2)}
+
+    .filters{display:flex;gap:10px;justify-content:center;margin:6px 0 18px;flex-wrap:wrap}
+    .chip{font-size:13px;padding:7px 12px;border-radius:999px;border:1px solid #e6f0e7;background:#fff;cursor:pointer}
+    .chip.active{background:var(--soft);border-color:#cfe9d1}
+    .products{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px}
+    .card{background:#fff;border:1px solid #edf4ee;border-radius:16px;overflow:hidden;box-shadow:0 6px 22px rgba(0,0,0,.06);position:relative;transition:transform .15s ease}
+    .card:hover{transform:translateY(-4px)}
+    .thumb{width:100%;height:170px;object-fit:cover;display:block}
+    .card-body{padding:14px}
+    .title{display:flex;align-items:center;gap:8px;font-weight:800;color:#222}
+    .title i{color:var(--accent)}
+    .meta{font-size:13px;color:#666;margin-top:6px;display:flex;align-items:center;gap:10px}
+    .price-row{display:flex;align-items:center;justify-content:space-between;margin-top:10px}
+    .btn{border:none;background:var(--brand-2);color:#fff;padding:8px 12px;border-radius:10px;cursor:pointer;font-weight:700;box-shadow:0 3px 10px rgba(67,160,71,.25)}
+    .badge{position:absolute;top:10px;left:10px;background:#ffffffcc;border:1px solid #eee;padding:6px 10px;font-size:12px;border-radius:999px;display:inline-flex;align-items:center;gap:6px}
+
+    .order-wrap{max-width:820px;margin:auto}
+    #orderList{list-style:none;padding:0;margin:14px 0}
+    #orderList li{display:flex;align-items:center;justify-content:space-between;gap:10px;background:#fff;border:1px solid #edf4ee;padding:10px 12px;border-radius:10px;margin:6px 0}
+    .qty{display:flex;align-items:center;gap:8px}
+    .qty button{width:28px;height:28px;border-radius:8px;border:1px solid #e6efe7;background:#fff;cursor:pointer}
+    .tot{display:flex;align-items:center;justify-content:space-between;padding-top:8px;border-top:1px dashed #dfeadf;margin-top:10px}
+    .btn-wa{display:inline-flex;align-items:center;gap:10px;background:#25d366;color:#fff;padding:12px 18px;border-radius:12px;text-decoration:none;font-weight:800}
+
+    .contact{display:grid;grid-template-columns:1.2fr .8fr;gap:18px}
+    .contact .card{padding:20px}
+    .contact p{margin:10px 0}
+
+    footer{background:var(--brand);color:#fff;text-align:center;padding:16px;margin-top:26px;font-size:14px}
+
+    .login-modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:60;align-items:center;justify-content:center}
+    .login-box{background:#fff;width:320px;padding:26px;border-radius:16px;border:1px solid #eef3ee;box-shadow:0 10px 30px rgba(0,0,0,.25);position:relative}
+    .login-box h3{margin:0 0 10px;color:var(--brand)}
+    .login-box input{width:100%;padding:11px 12px;border:1px solid #e6efe7;border-radius:10px;margin:8px 0}
+    .login-box button{width:100%;padding:11px 12px;border:none;border-radius:10px;background:var(--brand-2);color:#fff;font-weight:800;margin-top:4px}
+    .close{position:absolute;top:10px;right:12px;font-size:22px;cursor:pointer;color:#666}
+
+    .float-wa{position:fixed;right:16px;bottom:16px;z-index:40;display:flex;align-items:center;gap:10px;background:#25d366;color:#fff;padding:11px 14px;border-radius:999px;text-decoration:none;font-weight:800;box-shadow:0 10px 24px rgba(0,0,0,.25)}
+
+    @media (max-width:860px){
+      .contact{grid-template-columns:1fr}
+      .hero h1{font-size:38px}
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="container header-wrap">
+      <div class="brand">
+        <img src="logoo.jpeg" alt="Green Bloom Logo">
+        <span>Green Bloom Flowers</span>
+      </div>
+      <nav id="nav">
+        <!-- NAV ORDER UPDATED: Home, Products, Services, Order, About, Contact, Login -->
+        <a href="#home" class="active">Home</a>
+        <a href="#flowers">Products</a>
+        <a href="#services">Services</a>
+        <a href="#order">Order</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+      </nav>
+      <span class="login-btn" onclick="openLogin()"><i class="fa-solid fa-user"></i> Login</span>
+    </div>
+  </header>
+
+  <!-- HOME -->
+  <section id="home">
+    <div class="container hero">
+      <h1><i class="fa-solid fa-seedling"></i> Fresh. Elegant. Delivered.</h1>
+      <p>Hand-picked bouquets crafted with love since 2010.</p>
+      <a href="#flowers" class="cta"><i class="fa-solid fa-cart-shopping"></i> Shop Bouquets</a>
+      <div class="mini-badges">
+        <span><i class="fa-solid fa-bolt"></i> Same-day delivery</span>
+        <span><i class="fa-solid fa-leaf"></i> Eco packaging</span>
+        <span><i class="fa-solid fa-heart"></i> 4.9 ★ rating</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRODUCTS -->
+  <section id="flowers">
+    <div class="container">
+      <h2 class="section-title"><i class="fa-solid fa-basket-shopping"></i> Popular Bouquets</h2>
+
+      <div class="filters">
+        <button class="chip active" onclick="filterCards('all')"><i class="fa-solid fa-fire"></i> All</button>
+        <button class="chip" onclick="filterCards('love')"><i class="fa-solid fa-heart"></i> Love</button>
+        <button class="chip" onclick="filterCards('bright')"><i class="fa-solid fa-sun"></i> Bright</button>
+        <button class="chip" onclick="filterCards('elegant')"><i class="fa-solid fa-feather-pointed"></i> Elegant</button>
+      </div>
+
+      <div class="products" id="productGrid">
+        <div class="card" data-tag="love">
+          <span class="badge"><i class="fa-solid fa-heart"></i> Best Seller</span>
+          <img class="thumb" src="rose.jpeg" alt="Rose Bouquet">
+          <div class="card-body">
+            <div class="title"><i class="fa-solid fa-bouquet"></i> Rose Bouquet</div>
+            <div class="meta"><i class="fa-solid fa-star"></i> 4.9 • 120+ reviews</div>
+            <div class="price-row">
+              <strong>₹150</strong>
+              <button class="btn" onclick="addToOrder('Rose Bouquet',150)"><i class="fa-solid fa-cart-plus"></i> Add</button>
+            </div>
+          </div>
+        </div>
+        <div class="card" data-tag="bright">
+          <span class="badge"><i class="fa-solid fa-sun"></i> Sunny Pick</span>
+          <img class="thumb" src="sun.jpeg" alt="Sunflower">
+          <div class="card-body">
+            <div class="title"><i class="fa-solid fa-bouquet"></i> Sunflower</div>
+            <div class="meta"><i class="fa-solid fa-star"></i> 4.8 • 90+ reviews</div>
+            <div class="price-row">
+              <strong>₹100</strong>
+              <button class="btn" onclick="addToOrder('Sunflower',100)"><i class="fa-solid fa-cart-plus"></i> Add</button>
+            </div>
+          </div>
+        </div>
+        <div class="card" data-tag="elegant">
+          <img class="thumb" src="lily.jpeg" alt="Lily">
+          <div class="card-body">
+            <div class="title"><i class="fa-solid fa-bouquet"></i> Lily</div>
+            <div class="meta"><i class="fa-solid fa-star"></i> 4.7 • 60+ reviews</div>
+            <div class="price-row">
+              <strong>₹120</strong>
+              <button class="btn" onclick="addToOrder('Lily',120)"><i class="fa-solid fa-cart-plus"></i> Add</button>
+            </div>
+          </div>
+        </div>
+        <div class="card" data-tag="elegant">
+          <img class="thumb" src="tupli.jpeg" alt="Tulip">
+          <div class="card-body">
+            <div class="title"><i class="fa-solid fa-bouquet"></i> Tulip</div>
+            <div class="meta"><i class="fa-solid fa-star"></i> 4.7 • 70+ reviews</div>
+            <div class="price-row">
+              <strong>₹130</strong>
+              <button class="btn" onclick="addToOrder('Tulip',130)"><i class="fa-solid fa-cart-plus"></i> Add</button>
+            </div>
+          </div>
+        </div>
+        <div class="card" data-tag="bright">
+          <img class="thumb" src="jasmine.jpeg" alt="Jasmine">
+          <div class="card-body">
+            <div class="title"><i class="fa-solid fa-bouquet"></i> Jasmine</div>
+            <div class="meta"><i class="fa-solid fa-star"></i> 4.6 • 80+ reviews</div>
+            <div class="price-row">
+              <strong>₹80</strong>
+              <button class="btn" onclick="addToOrder('Jasmine',80)"><i class="fa-solid fa-cart-plus"></i> Add</button>
+            </div>
+          </div>
+        </div>
+           
+        <div class="card" data-tag="love">
+          <img class="thumb" src="dalia.jpeg" alt="dalia">
+          <div class="card-body">
+            <div class="title"><i class="fa-solid fa-bouquet"></i> Dalia</div>
+            <div class="meta"><i class="fa-solid fa-star"></i> 4.7 • 60+ reviews</div>
+            <div class="price-row">
+              <strong>₹80</strong>
+              <button class="btn" onclick="addToOrder('dalia',120)"><i class="fa-solid fa-cart-plus"></i> Add</button>
+            </div>
+          </div>
+        </div>
+        <div class="card" data-tag="bright">
+          <img class="thumb" src="mary gold.jpeg" alt="Marigold">
+          <div class="card-body">
+            <div class="title"><i class="fa-solid fa-bouquet"></i> Marigold</div>
+            <div class="meta"><i class="fa-solid fa-star"></i> 4.5 • 50+ reviews</div>
+            <div class="price-row">
+              <strong>₹70</strong>
+              <button class="btn" onclick="addToOrder('Marigold',70)"><i class="fa-solid fa-cart-plus"></i> Add</button>
+            </div>
+          </div>
+        </div>
+        <div class="card" data-tag="elegant">
+          <img class="thumb" src="nerium.jpeg" alt="Nerium">
+          <div class="card-body">
+            <div class="title"><i class="fa-solid fa-bouquet"></i> Nerium</div>
+            <div class="meta"><i class="fa-solid fa-star"></i> 4.6 • 40+ reviews</div>
+            <div class="price-row">
+              <strong>₹90</strong>
+              <button class="btn" onclick="addToOrder('Nerium',90)"><i class="fa-solid fa-cart-plus"></i> Add</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section id="services">
+    <div class="container">
+      <h2 class="section-title"><i class="fa-solid fa-hand-holding-heart"></i> Our Services</h2>
+      <div class="services-grid">
+        <div class="service">
+          <i class="fa-solid fa-bowling-ball"></i>
+          <h3>Custom Bouquets</h3>
+          <p>Made-to-order designs for birthdays, anniversaries and more.</p>
+        </div>
+        <div class="service">
+          <i class="fa-solid fa-truck-fast"></i>
+          <h3>Fast Delivery</h3>
+          <p>Express and same-day options across the city.</p>
+        </div>
+        <div class="service">
+          <i class="fa-solid fa-gift"></i>
+          <h3>Event Decor</h3>
+          <p>Weddings, parties, and corporate events—end-to-end styling.</p>
+        </div>
+        <div class="service">
+          <i class="fa-solid fa-user-tie"></i>
+          <h3>Corporate Gifting</h3>
+          <p>Elegant bouquet subscriptions and festive hampers.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ORDER -->
+  <section id="order">
+    <div class="container section-card order-wrap">
+      <h2 class="section-title"><i class="fa-solid fa-receipt"></i> Your Order</h2>
+      <ul id="orderList"></ul>
+      <div class="tot">
+        <strong id="itemCount">0 items</strong>
+        <strong id="totalPrice">Total: ₹0</strong>
+      </div>
+      <div style="margin-top:14px;display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end">
+        <a id="whatsappBtn" class="btn-wa" href="#" target="_blank"><i class="fa-brands fa-whatsapp"></i> Send on WhatsApp</a>
+        <button class="btn" onclick="clearOrder()"><i class="fa-solid fa-broom"></i> Clear</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="container section-card about">
+      <h2 class="section-title"><i class="fa-solid fa-leaf"></i> About Us</h2>
+      <p>Welcome to <strong>Green Bloom Flowers</strong>. From birthdays to weddings, we design custom bouquets with farm-fresh stems and sustainable packaging.</p>
+      <div class="stats">
+        <div class="stat">
+          <i class="fa-solid fa-face-smile"></i>
+          <div><strong>10K+</strong><br>Happy Customers</div>
+        </div>
+        <div class="stat">
+          <i class="fa-solid fa-truck-fast"></i>
+          <div><strong>Same-Day</strong><br>Delivery</div>
+        </div>
+        <div class="stat">
+          <i class="fa-solid fa-seedling"></i>
+          <div><strong>Eco</strong><br>Packaging</div>
+        </div>
+        <div class="stat">
+          <i class="fa-solid fa-star"></i>
+          <div><strong>4.9/5</strong><br>Average Rating</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="container contact">
+      <div class="section-card">
+        <h2 class="section-title"><i class="fa-solid fa-phone"></i> Contact Us</h2>
+        <p><i class="fa-solid fa-phone-volume" style="color:var(--brand)"></i> <a href="tel:+919894624663">+91 98946 24663</a></p>
+        <p><i class="fa-brands fa-whatsapp" style="color:#25d366"></i> <a href="https://wa.me/919894623663" target="_blank">Chat on WhatsApp</a></p>
+        <p><i class="fa-solid fa-location-dot" style="color:var(--accent)"></i> Green Bloom Flowers, Main Street, Your City</p>
+        <p><i class="fa-solid fa-clock" style="color:var(--brand)"></i> Mon–Sun: 8:00 AM – 8:00 PM</p>
+      </div>
+      <div class="section-card">
+        <h3 style="margin:0 0 10px;color:var(--brand)"><i class="fa-solid fa-envelope-open-text"></i> Quick Message</h3>
+        <form onsubmit="event.preventDefault(); alert('Thanks! We will contact you soon.'); this.reset();">
+          <input required placeholder="Your Name" style="width:100%;padding:10px 12px;border:1px solid #e6efe7;border-radius:10px;margin:6px 0">
+          <input type="email" required placeholder="Email" style="width:100%;padding:10px 12px;border:1px solid #e6efe7;border-radius:10px;margin:6px 0">
+          <textarea required placeholder="Message" rows="4" style="width:100%;padding:10px 12px;border:1px solid #e6efe7;border-radius:10px;margin:6px 0"></textarea>
+          <button class="btn" type="submit"><i class="fa-solid fa-paper-plane"></i> Send</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    © 2025 Green Bloom Flowers • Crafted with <i class="fa-solid fa-heart"></i>
+  </footer>
+
+  <!-- Login Modal -->
+  <div id="loginModal" class="login-modal" aria-hidden="true">
+    <div class="login-box" role="dialog" aria-modal="true">
+      <span class="close" onclick="closeLogin()" aria-label="Close">&times;</span>
+      <h3><i class="fa-solid fa-user"></i> Login</h3>
+      <input type="text" placeholder="Username" aria-label="Username">
+      <input type="password" placeholder="Password" aria-label="Password">
+      <button>Login</button>
+    </div>
+  </div>
+
+  <!-- Floating WhatsApp -->
+  <a id="floatWA" class="float-wa" href="https://wa.me/919894623663" target="_blank">
+    <i class="fa-brands fa-whatsapp"></i> Chat
+  </a>
+
+  <script>
+    // Active nav highlight on scroll (only for real sections)
+    const sections = [...document.querySelectorAll("section[id]")];
+    const navLinks = [...document.querySelectorAll("nav a")];
+    const setActive = () => {
+      const y = window.scrollY + 120;
+      let current = sections[0].id;
+      for (const s of sections){ if (y >= s.offsetTop) current = s.id; }
+      navLinks.forEach(a => {
+        const href = a.getAttribute("href");
+        a.classList.toggle("active", href && href.startsWith("#") && href === "#" + current);
+      });
+    };
+    window.addEventListener("scroll", setActive); setActive();
+
+    // SIMPLE FILTER
+    function filterCards(tag){
+      document.querySelectorAll(".chip").forEach(c=>c.classList.remove("active"));
+      const btn = [...document.querySelectorAll(".chip")].find(b => b.textContent.toLowerCase().includes(tag === 'all' ? 'all' : tag));
+      if(btn) btn.classList.add("active");
+      document.querySelectorAll(".products .card").forEach(card=>{
+        card.style.display = (tag === 'all' || card.dataset.tag === tag) ? "" : "none";
+      });
+    }
+
+    // ORDER CART
+    const order = new Map(); // key: name, val: {price, qty}
+    function addToOrder(name, price){
+      const item = order.get(name) || {price, qty:0};
+      item.qty++; order.set(name, item);
+      renderOrder();
+    }
+    function changeQty(name, delta){
+      const item = order.get(name); if(!item) return;
+      item.qty += delta; if(item.qty <= 0) order.delete(name);
+      renderOrder();
+    }
+    function clearOrder(){ order.clear(); renderOrder(); }
+
+    function renderOrder(){
+      const list = document.getElementById("orderList");
+      list.innerHTML = "";
+      let total = 0, count = 0;
+      order.forEach((v,k)=>{
+        total += v.price * v.qty; count += v.qty;
+        const li = document.createElement("li");
+        li.innerHTML = `
+          <span><i class="fa-solid fa-bouquet" style="color:${getComputedStyle(document.documentElement).getPropertyValue('--accent')}"></i>
+            ${k} <small style="color:#777">₹${v.price}</small></span>
+          <span class="qty">
+            <button aria-label="Decrease" onclick="changeQty('${k.replace(/'/g,"\\'")}',-1)"><i class="fa-solid fa-minus"></i></button>
+            <strong>${v.qty}</strong>
+            <button aria-label="Increase" onclick="changeQty('${k.replace(/'/g,"\\'")}',1)"><i class="fa-solid fa-plus"></i></button>
+          </span>`;
+        list.appendChild(li);
+      });
+      document.getElementById("totalPrice").textContent = "Total: ₹" + total;
+      document.getElementById("itemCount").textContent = count + (count === 1 ? " item" : " items");
+
+      const msg = [...order.entries()]
+        .map(([k,v]) => `${k} x ${v.qty} - ₹${v.price * v.qty}`)
+        .join('%0A') + (order.size ? `%0A%0ATotal: ₹${total}` : 'Your cart is empty');
+      const wa = document.getElementById("whatsappBtn");
+      wa.href = `https://wa.me/919894623663?text=${msg}`;
+    }
+
+    // LOGIN MODAL
+    function openLogin(){ document.getElementById("loginModal").style.display="flex"; }
+    function closeLogin(){ document.getElementById("loginModal").style.display="none"; }
+
+    // Expose for buttons
+    window.addToOrder = addToOrder;
+    window.changeQty = changeQty;
+    window.clearOrder = clearOrder;
+    window.filterCards = filterCards;
+    window.openLogin = openLogin;
+    window.closeLogin = closeLogin;
+  </script>
+</body>
+</html>
+
